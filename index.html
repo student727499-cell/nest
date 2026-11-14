@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <!-- Full-bleed, no transparency: iOS rounds the corners itself and would
+         paint transparent pixels black. -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#002b36" />
+    <!-- Installed-app behaviour on iPhone / iPad ("Add to Home Screen"). -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Nest" />
+    <!-- "default" keeps the status bar readable on light and dark themes alike;
+         the app content starts below it. -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="application-name" content="Nest" />
+    <meta name="format-detection" content="telephone=no" />
+    <script>
+      // Apply the saved theme before first paint. Without this, React applies
+      // the theme in an effect *after* the first render, so a dark-themed user
+      // sees a white flash on every load.
+      (function () {
+        try {
+          var raw = localStorage.getItem('nest.settings.v1');
+          var s = raw ? JSON.parse(raw) : {};
+          var theme = s.theme;
+          if (s.themeMode === 'system') {
+            var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            theme = dark ? s.themeDark || 'solarized' : s.themeLight || 'light';
+          }
+          document.documentElement.setAttribute('data-theme', theme || 'solarized');
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'solarized');
+        }
+      })();
+    </script>
+    <meta
+      name="description"
+      content="Nest — a note-taking app where folders, notes and canvases nest infinitely. Local-first, fast, private. Works offline on phone and desktop."
+    />
+    <title>Nest</title>
+    <script type="module" crossorigin src="./assets/index-jEzFfhFA.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BgRoJU7R.css">
+  <link rel="manifest" href="./manifest.webmanifest"></head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
