@@ -1,9 +1,17 @@
 # Nest
 
-Notes, folders and canvases that nest inside each other — as deep as you like.
+A notes app where folders, notes and canvases go inside each other — as deep as you like.
+Works offline; your notes stay on your own device (no account, no server).
 
-**Open it:** https://student727499-cell.github.io/nest/
+- **Website and downloads:** https://student727499-cell.github.io/nest/
+- **Use it in the browser:** https://student727499-cell.github.io/nest/app/
 
-Install it as an app from there: in Chrome or Edge use the install icon in the address bar; on an iPhone or iPad open the page in Safari → Share → *Add to Home Screen*.
+| Device | How |
+| --- | --- |
+| Mac (macOS 12+, Apple silicon and Intel) | Download `Nest-mac.zip` from the website, open it, drag Nest to Applications. The first time: System Settings → Privacy & Security → **Open Anyway**. |
+| Windows | Open the web app in Edge or Chrome → **Install**. |
+| Android | Open the web app in Chrome → **Install** (or ⋮ → Add to Home screen). |
+| iPhone, iPad | Open the web app in Safari → Share → **Add to Home Screen**. |
 
-Your notes are stored only on your own device (in the browser's storage). Nothing is uploaded anywhere — this repository holds just the app itself.
+This repository holds the published files only: the website (top level), the web app (`app/`) and
+the Mac download (`download/`).

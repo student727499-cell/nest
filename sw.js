@@ -1,1 +1,30 @@
-if(!self.define){let e,i={};const n=(n,s)=>(n=new URL(n+".js",s).href,i[n]||new Promise(i=>{if("document"in self){const e=document.createElement("script");e.src=n,e.onload=i,document.head.appendChild(e)}else e=n,importScripts(n),i()}).then(()=>{let e=i[n];if(!e)throw new Error(`Module ${n} didn’t register its module`);return e}));self.define=(s,r)=>{const o=e||("document"in self?document.currentScript.src:"")||location.href;if(i[o])return;let c={};const l=e=>n(e,o),f={module:{uri:o},exports:c,require:l};i[o]=Promise.all(s.map(e=>f[e]||l(e))).then(e=>(r(...e),c))}}define(["./workbox-2fbc6a65"],function(e){"use strict";self.addEventListener("message",e=>{e.data&&"SKIP_WAITING"===e.data.type&&self.skipWaiting()}),e.precacheAndRoute([{url:"index.html",revision:"9e9f5e8d70c36cc8a016a517b89391c4"},{url:"icon.svg",revision:"e03343e4346bb6f2dc819a7592de7574"},{url:"icon-maskable-512.png",revision:"5d4a440f3c9753873e9d8d1463f83532"},{url:"icon-512.png",revision:"9bcf894534899fdaed917e8ce0778528"},{url:"icon-192.png",revision:"f39277480a98210ef722d3f3e90da7ee"},{url:"favicon.svg",revision:"9e77f8099b5260e7329f785905b70908"},{url:"apple-touch-icon.png",revision:"656a348bc1766a0a12cd1a392eaacf01"},{url:"assets/purify.es-BwoZCkIS.js",revision:null},{url:"assets/index.es-CypMAiSB.js",revision:null},{url:"assets/index-jEzFfhFA.js",revision:null},{url:"assets/index-GXJUT2gV.js",revision:null},{url:"assets/index-BgRoJU7R.css",revision:null},{url:"apple-touch-icon.png",revision:"656a348bc1766a0a12cd1a392eaacf01"},{url:"favicon.svg",revision:"9e77f8099b5260e7329f785905b70908"},{url:"icon-192.png",revision:"f39277480a98210ef722d3f3e90da7ee"},{url:"icon-512.png",revision:"9bcf894534899fdaed917e8ce0778528"},{url:"icon-maskable-512.png",revision:"5d4a440f3c9753873e9d8d1463f83532"},{url:"manifest.webmanifest",revision:"8fd77df3cec80f61c6f589d6e91b6649"}],{}),e.cleanupOutdatedCaches(),e.registerRoute(new e.NavigationRoute(e.createHandlerBoundToURL("index.html")))});
+// This address used to serve the Nest web app; it now lives in /nest/app/.
+// A browser that still runs the old offline worker for /nest/ gets this one
+// instead: it removes itself and the old offline copy, then reloads the open
+// pages, which then show the new site (or the app, for an installed copy).
+self.addEventListener('install', () => self.skipWaiting());
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    (async () => {
+      const keys = await caches.keys();
+      await Promise.all(
+        keys
+          .filter((k) => k.includes('/nest/') && !k.includes('/nest/app/'))
+          .map((k) => caches.delete(k)),
+      );
+      await self.registration.unregister();
+      const windows = await self.clients.matchAll({ type: 'window' });
+      for (const w of windows) {
+        try {
+          // Refresh the browser's own copy first, so the reload can't bring
+          // back the old page (which would register this worker again).
+          await fetch(w.url, { cache: 'reload', credentials: 'same-origin' });
+        } catch (e) {
+          // offline: reload anyway
+        }
+        w.navigate(w.url);
+      }
+    })(),
+  );
+});
