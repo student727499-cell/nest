@@ -1,4 +1,8 @@
 {
   "version": "1.4.0",
-  "date": "2026-11-15"
+  "date": "2026-11-15",
+  "mac": {
+    "file": "download/Nest-mac.zip",
+    "sha256": "03b48dfe28e51e791751abed53769e7b8944e8f1d9014b93b26383894e95666c"
+  }
 }
